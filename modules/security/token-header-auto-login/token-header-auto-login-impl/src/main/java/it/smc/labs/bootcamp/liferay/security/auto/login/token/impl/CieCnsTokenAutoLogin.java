@@ -152,12 +152,28 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 		User user = _userLocalService.fetchUserByScreenName(companyId, login);
 
 		if (user == null) {
-			_log.info("USER NOT EXISTING ON 7.2 SYSTEM: BEING CREATED");
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"The user with screenName %s does not exits in the " +
+							"company %s",
+						login, companyId));
+			}
+
 			user = getUser(companyId, login, cieCnsTokenCompanyServiceSettings);
 		}
 		else {
-			_log.info(
-				"USER EXISTING ON 7.2 SYSTEM: NOT NECESSARY TO GET REMOTELY");
+			//TODO: Provide a possible update of the user from the external
+
+			// source.
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"The user with screenName %s already exits in the " +
+							"company %s",
+						login, companyId));
+			}
 		}
 
 		addRedirect(httpServletRequest);
@@ -183,6 +199,14 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 			PropsValues.COMPANY_SECURITY_AUTH_TYPE);
 
 		if (cieCnsTokenCompanyServiceSettings.importFromExternalSource()) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"Try to import user with screenName %s in the " +
+							"company %s",
+						login, companyId));
+			}
+
 			try {
 				if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
 					user = _userImporter.importUser(
@@ -275,6 +299,10 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 			return true;
 		}
 
+		if (_log.isWarnEnabled()) {
+			_log.warn("Failed to validate origin. Check the configuration.");
+		}
+
 		return false;
 	}
 
@@ -312,6 +340,10 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 				ipWhitelist, httpServletRequest.getRemoteHost())) {
 
 			return true;
+		}
+
+		if (_log.isWarnEnabled()) {
+			_log.warn("Failed to validate source. Check the configuration.");
 		}
 
 		return false;

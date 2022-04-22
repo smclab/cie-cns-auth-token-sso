@@ -14,7 +14,6 @@
 
 package it.smc.labs.bootcamp.liferay.security.auto.login.token.impl.remote;
 
-import com.liferay.petra.concurrent.ConcurrentIdentityHashMap;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -27,7 +26,9 @@ import it.smc.labs.bootcamp.liferay.security.auto.login.token.repository.Details
 import it.smc.labs.bootcamp.liferay.security.auto.login.token.repository.model.ExternalUser;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -51,8 +52,8 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 	public ExternalUser getUserByScreenName(long companyId, String screenName)
 		throws PortalException {
 
-		if (_externalUserConcurrentIdentityHashMap.containsKey(screenName)) {
-			return _externalUserConcurrentIdentityHashMap.get(screenName);
+		if (_externalUserHashMap.containsKey(screenName)) {
+			return _externalUserHashMap.get(screenName);
 		}
 
 		throw new NoSuchUserException(
@@ -63,7 +64,7 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 
 	@Activate
 	protected void activate() {
-		if (_externalUserConcurrentIdentityHashMap.isEmpty()) {
+		if (_externalUserHashMap.isEmpty()) {
 			ExternalUser externalUser_1 = new ExternalUser();
 			ExternalUser externalUser_2 = new ExternalUser();
 			ExternalUser externalUser_3 = new ExternalUser();
@@ -101,11 +102,11 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 			externalUser_3.setUuid(_portalUUID.generate());
 			externalUser_3.setCreateDate(new Date());
 
-			_externalUserConcurrentIdentityHashMap.put(
+			_externalUserHashMap.put(
 				externalUser_1.getFiscalCode(), externalUser_1);
-			_externalUserConcurrentIdentityHashMap.put(
+			_externalUserHashMap.put(
 				externalUser_2.getFiscalCode(), externalUser_2);
-			_externalUserConcurrentIdentityHashMap.put(
+			_externalUserHashMap.put(
 				externalUser_3.getFiscalCode(), externalUser_3);
 
 			if (_log.isDebugEnabled()) {
@@ -116,7 +117,7 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 
 	@Deactivate
 	protected void deactivate() {
-		_externalUserConcurrentIdentityHashMap.clear();
+		_externalUserHashMap.clear();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Unloaded the external users from memory");
@@ -126,9 +127,8 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DetailsUserInfoMemoryImpl.class);
 
-	private static final ConcurrentIdentityHashMap<String, ExternalUser>
-		_externalUserConcurrentIdentityHashMap =
-			new ConcurrentIdentityHashMap<>();
+	private static final Map<String, ExternalUser> _externalUserHashMap =
+		new HashMap<>();
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;

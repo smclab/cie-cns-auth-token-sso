@@ -16,8 +16,6 @@ package it.smc.labs.bootcamp.liferay.security.auto.login.token.impl.exportimport
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -79,54 +77,47 @@ public class ExternalUserImporterImpl implements UserImporter {
 
 	@Override
 	public User importUserByScreenName(long companyId, String screenName)
-		throws Exception {
+		throws PortalException {
 
-		try {
-			ExternalUser externalUser = _getExternalUser(
-				companyId, StringPool.BLANK, screenName);
+		ExternalUser externalUser = _getExternalUser(
+			companyId, StringPool.BLANK, screenName);
 
-			User user = _getUser(companyId, externalUser);
+		User user = _getUser(companyId, externalUser);
 
-			if (user != null) {
-				return user;
-			}
-
-			return _addUser(companyId, externalUser);
-		}
-		catch (Exception exception) {
-			if (_log.isErrorEnabled()) {
-				_log.error(exception.getMessage(), exception);
-			}
+		if (user != null) {
+			return user;
 		}
 
-		return null;
+		return _addUser(companyId, externalUser);
 	}
 
 	@Override
 	public User importUserByUuid(long ldapServerId, long companyId, String uuid)
-		throws Exception {
+		throws PortalException {
 
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public User importUserByUuid(long companyId, String uuid) throws Exception {
+	public User importUserByUuid(long companyId, String uuid)
+		throws PortalException {
+
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void importUsers() throws Exception {
+	public void importUsers() throws PortalException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void importUsers(long companyId) throws Exception {
+	public void importUsers(long companyId) throws PortalException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void importUsers(long ldapServerId, long companyId)
-		throws Exception {
+		throws PortalException {
 
 		throw new UnsupportedOperationException(
 			"This method is not implemented. Not supported user import by " +
@@ -207,9 +198,6 @@ public class ExternalUserImporterImpl implements UserImporter {
 		return _userLocalService.fetchUserByEmailAddress(
 			companyId, externalUser.getEmailAddress());
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ExternalUserImporterImpl.class);
 
 	@Reference
 	private DetailsUserInfo _detailsUserInfo;
