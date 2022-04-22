@@ -87,15 +87,11 @@ public class ExternalUserImporterImpl implements UserImporter {
 
 			User user = _getUser(companyId, externalUser);
 
-			if ((user != null) && user.isDefaultUser()) {
+			if (user != null) {
 				return user;
 			}
 
-			if (user == null) {
-				user = _addUser(companyId, externalUser);
-			}
-
-			return user;
+			return _addUser(companyId, externalUser);
 		}
 		catch (Exception exception) {
 			if (_log.isErrorEnabled()) {
