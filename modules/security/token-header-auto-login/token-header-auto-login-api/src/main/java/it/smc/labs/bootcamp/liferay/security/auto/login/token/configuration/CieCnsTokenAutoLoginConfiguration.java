@@ -26,7 +26,7 @@ import com.liferay.portal.security.sso.token.security.auth.TokenLocation;
 	category = "sso", scope = ExtendedObjectClassDefinition.Scope.COMPANY
 )
 @Meta.OCD(
-	id = "it.smc.labs.bootcamp.liferay.security.auto.login.token.configuration.CieCnsTokenAutoLoginConfiguration",
+	id = CieCnsTokenAutoLoginConfiguration.PID,
 	localization = "content/Language",
 	name = "cie-cns-token-auto-login-configuration-name"
 )
@@ -51,14 +51,14 @@ public interface CieCnsTokenAutoLoginConfiguration {
 		deflt = "X-AUTH-ORIGIN", description = "origin-http-header-name-help",
 		name = "origin-http-header-name", required = false
 	)
-	public String orginHttpHeaderName();
+	public String originHttpHeaderName();
 
 	@Meta.AD(
 		deflt = "IDP_REVERSE_PROXY|IDP_REVERSE_PROXY_TEST",
 		description = "origin-http-header-values-help",
 		name = "origin-http-header-values", required = false
 	)
-	public String[] orginHttpHeaderValues();
+	public String[] originHttpHeaderValues();
 
 	@Meta.AD(
 		deflt = "127.0.0.1|192.168.10.205", description = "whitelist-help",
@@ -83,5 +83,9 @@ public interface CieCnsTokenAutoLoginConfiguration {
 		required = false
 	)
 	public String tokenLocation();
+
+	public final String PID =
+		"it.smc.labs.bootcamp.liferay.security.auto.login.token." +
+			"configuration.CieCnsTokenAutoLoginConfiguration";
 
 }

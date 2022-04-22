@@ -39,7 +39,6 @@ import com.liferay.portal.security.sso.token.security.auth.TokenRetriever;
 import com.liferay.portal.util.PropsValues;
 
 import it.smc.labs.bootcamp.liferay.security.auto.login.token.configuration.CieCnsTokenAutoLoginConfiguration;
-import it.smc.labs.bootcamp.liferay.security.auto.login.token.constants.CieCnsTokenAutoLoginConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,7 +63,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Antonio Musarra
  */
 @Component(
-	configurationPid = "it.smc.labs.bootcamp.liferay.security.auto.login.token.configuration.CieCnsTokenAutoLoginConfiguration",
+	configurationPid = CieCnsTokenAutoLoginConfiguration.PID,
 	configurationPolicy = ConfigurationPolicy.OPTIONAL,
 	service = AutoLogin.class
 )
@@ -93,7 +92,7 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 			_configurationProvider.getConfiguration(
 				CieCnsTokenAutoLoginConfiguration.class,
 				new CompanyServiceSettingsLocator(
-					companyId, CieCnsTokenAutoLoginConstants.SERVICE_NAME));
+					companyId, CieCnsTokenAutoLoginConfiguration.PID));
 
 		if (!cieCnsTokenCompanyServiceSettings.enabled()) {
 			if (_log.isDebugEnabled()) {
@@ -250,27 +249,27 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 		CieCnsTokenAutoLoginConfiguration cieCnsTokenCompanyServiceSettings) {
 
 		String authOriginValue = httpServletRequest.getHeader(
-			cieCnsTokenCompanyServiceSettings.orginHttpHeaderName());
+			cieCnsTokenCompanyServiceSettings.originHttpHeaderName());
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
 					"Value received on the HTTP Header %s is %s",
-					cieCnsTokenCompanyServiceSettings.orginHttpHeaderName(),
+					cieCnsTokenCompanyServiceSettings.originHttpHeaderName(),
 					authOriginValue));
 
 			_log.debug(
 				String.format(
 					"Value admitted for HTTP Header %s are %s",
-					cieCnsTokenCompanyServiceSettings.orginHttpHeaderName(),
+					cieCnsTokenCompanyServiceSettings.originHttpHeaderName(),
 					StringUtil.merge(
 						cieCnsTokenCompanyServiceSettings.
-							orginHttpHeaderValues(),
+							originHttpHeaderValues(),
 						StringPool.COMMA)));
 		}
 
 		if (ArrayUtil.contains(
-				cieCnsTokenCompanyServiceSettings.orginHttpHeaderValues(),
+				cieCnsTokenCompanyServiceSettings.originHttpHeaderValues(),
 				authOriginValue)) {
 
 			return true;
