@@ -1,0 +1,4 @@
+Bundle-Description: Implementation API Bundle to access user via the CIE and CNS Smart Card
+Bundle-Name: CIE-CNS Auto Login Token API Implementation
+Bundle-SymbolicName: it.smc.labs.bootcamp.liferay.security.auto.login.token.impl
+Bundle-Version: 1.0.0

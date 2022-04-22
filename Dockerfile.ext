@@ -1,0 +1,2 @@
+# Any instructions here will be appended to the end of the Dockerfile created by `createDockerfile`.
+ENV JAVA_VERSION=zulu11

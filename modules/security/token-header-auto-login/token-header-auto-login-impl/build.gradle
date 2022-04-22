@@ -1,0 +1,11 @@
+dependencies {
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl"
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+	compileOnly project(":modules:security:token-header-auto-login:token-header-auto-login-api")
+}
+
+gradle.projectsEvaluated {
+	tasks.withType(JavaCompile) {
+		options.compilerArgs << "-Xlint:unchecked"
+	}
+}
