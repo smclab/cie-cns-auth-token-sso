@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 
@@ -129,9 +128,6 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 
 	private static final Map<String, ExternalUser> _externalUserHashMap =
 		new HashMap<>();
-
-	@Reference
-	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private PortalUUID _portalUUID;
