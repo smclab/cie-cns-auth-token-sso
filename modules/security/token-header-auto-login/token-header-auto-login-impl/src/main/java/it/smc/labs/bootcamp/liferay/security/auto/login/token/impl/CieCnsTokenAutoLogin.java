@@ -126,8 +126,8 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 			return null;
 		}
 
-		String login = tokenRetriever.getLoginToken(
-			httpServletRequest, userTokenName);
+		String login = _extractLoginFromUserNameToken(
+			tokenRetriever.getLoginToken(httpServletRequest, userTokenName));
 
 		if (Validator.isNull(login)) {
 			if (_log.isInfoEnabled()) {
@@ -266,6 +266,16 @@ public class CieCnsTokenAutoLogin extends BaseAutoLogin {
 		}
 
 		return user;
+	}
+
+	private String _extractLoginFromUserNameToken(String userNameToken) {
+		String[] splitted = userNameToken.split(StringPool.SLASH);
+
+		if (Validator.isNotNull(splitted[0])) {
+			return splitted[0];
+		}
+
+		return StringPool.NULL;
 	}
 
 	private boolean _isValidOrigin(
