@@ -78,6 +78,7 @@ public class DetailsUserInfoMemoryImpl implements DetailsUserInfo {
 			externalUser_1.setStatus(1);
 			externalUser_1.setUuid(_portalUUID.generate());
 			externalUser_1.setCreateDate(new Date());
+			externalUser_1.setRolesName(new String[] {"Administrator"});
 
 			externalUser_2.setFirstName("Mario");
 			externalUser_2.setLastName("Rossi");

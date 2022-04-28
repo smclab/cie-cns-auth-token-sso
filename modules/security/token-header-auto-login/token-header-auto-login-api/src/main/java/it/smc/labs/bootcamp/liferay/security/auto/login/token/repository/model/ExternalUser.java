@@ -65,6 +65,10 @@ public class ExternalUser implements Serializable {
 		return _middleName;
 	}
 
+	public String[] getRolesName() {
+		return _rolesName;
+	}
+
 	public Integer getStatus() {
 		return _status;
 	}
@@ -121,6 +125,10 @@ public class ExternalUser implements Serializable {
 		_middleName = middleName;
 	}
 
+	public void setRolesName(String[] rolesName) {
+		_rolesName = rolesName;
+	}
+
 	public void setStatus(Integer status) {
 		_status = status;
 	}
@@ -141,6 +149,7 @@ public class ExternalUser implements Serializable {
 	private String _languageId;
 	private String _lastName;
 	private String _middleName;
+	private String[] _rolesName;
 	private int _status;
 	private String _uuid;
 

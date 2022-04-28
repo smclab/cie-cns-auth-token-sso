@@ -17,7 +17,9 @@ package it.smc.labs.bootcamp.liferay.security.auto.login.token.impl.exportimport
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
@@ -166,6 +168,12 @@ public class ExternalUserImporterImpl implements UserImporter {
 		_userLocalService.addDefaultGroups(user.getUserId());
 		_userLocalService.addDefaultUserGroups(user.getUserId());
 
+		for (String roleName : externalUser.getRolesName()) {
+			Role role = _roleLocalService.getRole(companyId, roleName);
+
+			_roleLocalService.addUserRole(user.getUserId(), role.getRoleId());
+		}
+
 		return _userLocalService.updatePassword(
 			user.getUserId(), password, password, false);
 	}
@@ -201,6 +209,9 @@ public class ExternalUserImporterImpl implements UserImporter {
 
 	@Reference
 	private DetailsUserInfo _detailsUserInfo;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;
