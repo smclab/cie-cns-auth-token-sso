@@ -1,0 +1,81 @@
+version: '3.9'
+services:
+  liferay:
+    image: liferay/portal:7.4.3.19-ga19
+    environment:
+      - LIFERAY_JPDA_ENABLED=true
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME=org.postgresql.Driver
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=liferay
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=my-secret-pw
+      - LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_HOST=mail
+      - LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false
+      - LIFERAY_WORKSPACE_ENVIRONMENT=local
+      - LIFERAY_MAIL_PERIOD_SEND_PERIOD_BLACKLIST=noreply@domain.invalid,test@domain.invalid
+      - JAVA_VERSION=zulu11
+    ports:
+      - '8080:8080'
+      - '8000:8000'
+      - '11311:11311'
+      - '9201:9201'
+    volumes:
+      - ./configs/docker/scripts:/mnt/liferay/scripts
+      - ./configs/docker/osgi/configs:/opt/liferay/osgi/configs
+      - ./configs/docker/osgi/log4j:/opt/liferay/osgi/log4j
+      - ./configs/docker/portal-ext.properties:/opt/liferay/portal-ext.properties
+      - ./bundles/osgi/marketplace/override:/opt/liferay/osgi/marketplace/override
+      - ./bundles/osgi/modules:/opt/liferay/osgi/modules
+      - ./bundles/osgi/war:/opt/liferay/osgi/war
+      - ./bundles/deploy:/opt/liferay/deploy
+      - ./bundles/data:/opt/liferay/data
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:12.8
+    environment:
+      - POSTGRES_PASSWORD=my-secret-pw
+      - POSTGRES_USER=liferay
+      - POSTGRES_DB=lportal
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 6432:5432
+    volumes:
+      - ./bundles/postgres/data:/var/lib/postgresql/data
+  mail:
+    image: miladrahimi/fake-smtp
+    working_dir: /output/
+    volumes:
+      - ./bundles/mail/:/output/
+    ports:
+      - 25
+  proxy-cns:
+      image: amusarra/cie-cns-apache-docker-extended-for-liferay-bootcamp-2022:2.2.0-rp-liferay
+      environment:
+        - APACHE_SERVER_NAME=cns.portal.local
+        - APPLICATION_BACKEND_BASE_URL=http://liferay:8080/
+        - HEADER_X_AUTH_ORIGIN=RP_IDP_TEST_CNS
+        - APACHE_SSL_CERTS=cns.portal.local_crt.pem
+        - APACHE_SSL_PRIVATE=cns.portal.local_key.pem
+      ports:
+        - 8443:10443
+  proxy-cie:
+    image: amusarra/cie-cns-apache-docker-extended-for-liferay-bootcamp-2022:2.2.0-rp-liferay
+    environment:
+      - APACHE_SERVER_NAME=cie.portal.local
+      - APPLICATION_BACKEND_BASE_URL=http://liferay:8080/
+      - HEADER_X_AUTH_ORIGIN=RP_IDP_TEST_CIE
+      - APACHE_SSL_CERTS=cie.portal.local_crt.pem
+      - APACHE_SSL_PRIVATE=cie.portal.local_key.pem
+    ports:
+      - 9443:10443
+  proxy-cie-cns-admin:
+    image: amusarra/cie-cns-apache-docker-extended-for-liferay-bootcamp-2022:2.2.0-rp-liferay
+    environment:
+      - APACHE_SERVER_NAME=admin.portal.local
+      - APPLICATION_BACKEND_BASE_URL=http://liferay:8080/
+      - HEADER_X_AUTH_ORIGIN=RP_IDP_TEST_ADMIN
+      - APACHE_SSL_VERIFY_CLIENT=optional
+      - APACHE_SSL_CERTS=admin.portal.local_crt.pem
+      - APACHE_SSL_PRIVATE=admin.portal.local_key.pem
+    ports:
+      - 7443:10443
