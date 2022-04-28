@@ -54,7 +54,7 @@ public interface CieCnsTokenAutoLoginConfiguration {
 	public String originHttpHeaderName();
 
 	@Meta.AD(
-		deflt = "IDP_REVERSE_PROXY|IDP_REVERSE_PROXY_TEST",
+		deflt = "RP_IDP_TEST_CIE|RP_IDP_TEST_CNS|",
 		description = "origin-http-header-values-help",
 		name = "origin-http-header-values", required = false
 	)
