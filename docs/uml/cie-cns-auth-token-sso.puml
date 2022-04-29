@@ -1,0 +1,84 @@
+@startuml
+
+title
+**Diagram of the main components of the Auto Login module that is created.**
+end title
+
+package "CIE-CNS Auto Login Token API Implementation (OSGi Bundle)" {
+	component "Base Auto Login" {
+		class CieCnsTokenAutoLogin
+	}
+
+	component "User Importer" {
+		class ExternalUserImporterImpl
+	}
+
+	component "Details User Info" {
+		class DetailsUserInfoMemoryImpl
+	}
+}
+
+package "CIE-CNS Auto Login Token API (OSGi Bundle)" {
+	component Configuration {
+		interface CieCnsTokenAutoLoginConfiguration
+	}
+
+	component "Detail User Info" {
+		DetailsUserInfo <|.. DetailsUserInfoMemoryImpl
+		DetailsUserInfo <.. ExternalUserImporterImpl:use
+	}
+
+	component Repository {
+		ExternalUser <.. DetailsUserInfoMemoryImpl:use
+
+	}
+
+}
+
+package com.liferay.portal.kernel.security.auto.login {
+	BaseAutoLogin <|-- CieCnsTokenAutoLogin
+}
+
+package com.liferay.portal.security.exportimport {
+	UserImporter <|.. ExternalUserImporterImpl
+	UserImporter <.. CieCnsTokenAutoLogin:use
+}
+
+note bottom of ExternalUser
+	It is a classic POJO whose purpose
+	is to represent user information
+	that comes from the external system.
+end note
+
+note bottom of DetailsUserInfoMemoryImpl
+	OSGi component that loads into memory a
+	set of users that can be imported to the
+	Liferay portal after successful login via Smart Card.
+end note
+
+note bottom of ExternalUserImporterImpl
+	OSGi component that imports users to
+	the Liferay portal by drawing from
+	the users' external source.
+end note
+
+note top of DetailsUserInfo
+	Interface that defines methods to retrieve
+	users from the users' external system.
+end note
+
+note top of CieCnsTokenAutoLoginConfiguration
+	OSGi Configuration Interface for the Auto Login
+	component (OSGi Component).
+end note
+
+note bottom of CieCnsTokenAutoLogin
+	OSGi component that implements the doLogin()
+	method by applying all the appropriate
+	logic to make users log in to the Liferay portal.
+end note
+
+interface DetailsUserInfo
+interface UserImporter
+
+@enduml
