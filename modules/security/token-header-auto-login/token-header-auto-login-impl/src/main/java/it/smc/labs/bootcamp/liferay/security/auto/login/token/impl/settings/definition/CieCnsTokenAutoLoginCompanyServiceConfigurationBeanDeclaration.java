@@ -21,6 +21,11 @@ import it.smc.labs.bootcamp.liferay.security.auto.login.token.configuration.CieC
 import org.osgi.service.component.annotations.Component;
 
 /**
+ * Component for registration of the application configuration, registration
+ * required to be able to read the configuration through the
+ * {@link com.liferay.portal.kernel.module.configuration.ConfigurationProvider}
+ * and in the right scope.
+ *
  * @author Antonio Musarra
  */
 @Component(service = ConfigurationBeanDeclaration.class)

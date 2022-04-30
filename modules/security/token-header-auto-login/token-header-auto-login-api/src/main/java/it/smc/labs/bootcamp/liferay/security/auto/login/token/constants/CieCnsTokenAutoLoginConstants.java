@@ -15,6 +15,8 @@
 package it.smc.labs.bootcamp.liferay.security.auto.login.token.constants;
 
 /**
+ * Define the CIE/CNS Token Auto Login Constants
+ *
  * @author Antonio Musarra
  */
 public class CieCnsTokenAutoLoginConstants {

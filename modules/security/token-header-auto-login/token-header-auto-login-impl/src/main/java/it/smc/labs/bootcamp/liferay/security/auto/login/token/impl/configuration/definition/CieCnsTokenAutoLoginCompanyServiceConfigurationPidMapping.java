@@ -22,6 +22,9 @@ import it.smc.labs.bootcamp.liferay.security.auto.login.token.constants.CieCnsTo
 import org.osgi.service.component.annotations.Component;
 
 /**
+ * The OSGi component is responsible for connecting the osgi config instance
+ * the ui in the portlet scope, otherwise default values will not be visible.
+ *
  * @author Antonio Musarra
  */
 @Component(service = ConfigurationPidMapping.class)

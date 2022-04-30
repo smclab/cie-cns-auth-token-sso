@@ -20,6 +20,8 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 import com.liferay.portal.security.sso.token.security.auth.TokenLocation;
 
 /**
+ * CIE/CNS Token Auto Login OSGi Configuration interface.
+ *
  * @author Antonio Musarra
  */
 @ExtendedObjectClassDefinition(

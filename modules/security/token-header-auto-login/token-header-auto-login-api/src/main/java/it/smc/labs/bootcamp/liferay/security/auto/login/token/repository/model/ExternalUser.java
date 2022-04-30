@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * It is a classic POJO whose purpose is to represent user information that
+ * comes from the external system.
+ *
  * @author Antonio Musarra
  */
 public class ExternalUser implements Serializable {

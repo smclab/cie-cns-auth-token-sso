@@ -35,6 +35,10 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * This component implements the {@link DetailsUserInfo} interface whose
+ * responsibility is to find the users, in this case in memory, and return
+ * them as an {@link ExternalUser} object.
+ *
  * @author Antonio Musarra
  */
 @Component(immediate = true, service = DetailsUserInfo.class)

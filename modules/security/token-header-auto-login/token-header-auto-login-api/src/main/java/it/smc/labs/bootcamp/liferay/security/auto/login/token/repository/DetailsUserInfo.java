@@ -19,13 +19,33 @@ import com.liferay.portal.kernel.exception.PortalException;
 import it.smc.labs.bootcamp.liferay.security.auto.login.token.repository.model.ExternalUser;
 
 /**
+ * This interface defines the contract for retrieving user information from an
+ * external source (database, memory, etc.). Additional information about users
+ * can be obtained from their email or screen name.
+ *
  * @author Antonio Musarra
  */
 public interface DetailsUserInfo {
 
+	/**
+	 * Return the personal data of the user by email address
+	 *
+	 * @param companyId The Liferay CompanyId
+	 * @param email The email address
+	 * @return The personal data about user
+	 * @throws PortalException
+	 */
 	public ExternalUser getUserByEmail(long companyId, String email)
 		throws PortalException;
 
+	/**
+	 * Return the personal data of the user by scree name
+	 *
+	 * @param companyId The Liferay CompanyId
+	 * @param screenName The screen Name
+	 * @return The personal data about user
+	 * @throws PortalException
+	 */
 	public ExternalUser getUserByScreenName(long companyId, String screenName)
 		throws PortalException;
 

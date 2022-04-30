@@ -42,6 +42,17 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * This OSGi component implements the Liferay {@link UserImporter} interface.
+ * The responsibility of this component is therefore to import users from the
+ * external source to the Liferay database. The only method implemented is
+ * that of importing users via screen name.
+ *
+ * External users are taken over thanks to the use of the {@link DetailsUserInfo}
+ * interface
+ *
+ * @see UserImporter
+ * @see DetailsUserInfo
+ *
  * @author Antonio Musarra
  */
 @Component(immediate = true, service = UserImporter.class)
